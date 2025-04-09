@@ -74,9 +74,15 @@ async def main(host: str, port: int, access_token:str):
         return [
             nacos_tools.NacosListNamespacesTool(),
             nacos_tools.NacosListServices(),
+            nacos_tools.NacosGetService(),
             nacos_tools.NacosListInstances(),
+            nacos_tools.NacosListServiceSubscribers(),
             nacos_tools.NacosListConfigs(),
             nacos_tools.NacosGetConfig(),
+            nacos_tools.NacosListConfigHistory(),
+            nacos_tools.NacosGetConfigHistory(),
+            nacos_tools.NacosListConfigListeners(),
+            nacos_tools.NacosListListenedConfigs(),
         ]
 
     @server.call_tool()
@@ -91,8 +97,16 @@ async def main(host: str, port: int, access_token:str):
                     url = nacos_tools.NacosListServices().url
                     result = nacos.get(name, url, arguments)
                     return [types.TextContent(type="text", text=result)]
+                case nacos_tools.NacosToolNames.GET_SERVICE:
+                    url = nacos_tools.NacosGetService().url
+                    result = nacos.get(name, url, arguments)
+                    return [types.TextContent(type="text", text=result)]
                 case nacos_tools.NacosToolNames.LIST_INSTANCES:
                     url = nacos_tools.NacosListInstances().url
+                    result = nacos.get(name, url, arguments)
+                    return [types.TextContent(type="text", text=result)]
+                case nacos_tools.NacosToolNames.LIST_SERVICE_SUBSCRIBERS:
+                    url = nacos_tools.NacosListServiceSubscribers().url
                     result = nacos.get(name, url, arguments)
                     return [types.TextContent(type="text", text=result)]
                 case nacos_tools.NacosToolNames.LIST_CONFIGS:
@@ -103,6 +117,24 @@ async def main(host: str, port: int, access_token:str):
                     url = nacos_tools.NacosGetConfig().url
                     result = nacos.get(name, url, arguments)
                     return [types.TextContent(type="text", text=result)]
+                case nacos_tools.NacosToolNames.LIST_CONFIG_HISTORY:
+                    url = nacos_tools.NacosListConfigHistory().url
+                    result = nacos.get(name, url, arguments)
+                    return [types.TextContent(type="text", text=result)]
+                case nacos_tools.NacosToolNames.GET_CONFIG_HISTORY:
+                    url = nacos_tools.NacosGetConfigHistory().url
+                    result = nacos.get(name, url, arguments)
+                    return [types.TextContent(type="text", text=result)]
+                case nacos_tools.NacosToolNames.LIST_CONFIG_LISTENERS:
+                    url = nacos_tools.NacosListConfigListeners().url
+                    result = nacos.get(name, url, arguments)
+                    return [types.TextContent(type="text", text=result)]
+                case nacos_tools.NacosToolNames.LIST_LISTENED_CONFIGS:
+                    url = nacos_tools.NacosListListedConfigs().url
+                    result = nacos.get(name, url, arguments)
+                    return [types.TextContent(type="text", text=result)]
+                case _:
+                    raise ValueError(f"Unknown tool: {name}")
 
         except Exception as e:
             return [types.TextContent(type="text", text=str(e))]
