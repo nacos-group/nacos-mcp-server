@@ -25,9 +25,10 @@ jobs:
           echo "##[set-output name=version;]VERSION=${GITHUB_REF#$"refs/tags/"}"
           VERSION=${GITHUB_REF#$"refs/tags/"}
           echo "version $VERSION"
+          echo "pypi_packages=$PYPI" >> $GITHUB_OUTPUT
       - uses: actions/checkout@v4
         with:
-          ref: ${{ VERSION }}
+          ref: ${{ steps.version_step.outputs.VERSION }}
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
