@@ -1,4 +1,4 @@
-name: Publish To PyPi
+name: Build By UV
 
 on:
   push:
