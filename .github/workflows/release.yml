@@ -1,0 +1,56 @@
+name: Publish To PyPi
+
+on:
+  push:
+    branches:
+      - "main"
+    tags:
+      - "*"
+
+jobs:
+  publish-pypi:
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ["mcp_server_nacos"]
+    name: Build ${{ matrix.package }}
+    environment: release
+    permissions:
+      id-token: write # Required for trusted publishing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract Version
+        id: version_step
+        run: |
+          echo "##[set-output name=version;]VERSION=${GITHUB_REF#$"refs/tags/"}"
+          VERSION=${GITHUB_REF#$"refs/tags/"}
+          echo "version $VERSION"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ VERSION }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: "src/${{ matrix.package }}/.python-version"
+
+      - name: Install dependencies
+        working-directory: src/${{ matrix.package }}
+        run: uv sync --frozen --all-extras --dev
+
+      - name: Run pyright
+        working-directory: src/${{ matrix.package }}
+        run: uv run --frozen pyright
+
+      - name: Build package
+        working-directory: src/${{ matrix.package }}
+        run: uv build
+
+      - name: Publish package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: src/${{ matrix.package }}/dist
+
