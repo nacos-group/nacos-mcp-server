@@ -86,7 +86,7 @@ async def main(host: str, port: int, access_token:str):
         ]
 
     @server.call_tool()
-    async def call_tool(name: str, arguments: dict) -> list[types.TextContent] | None:
+    async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
         try:
             match name:
                 case nacos_tools.NacosToolNames.LIST_NAMESPACES:
