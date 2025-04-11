@@ -130,7 +130,7 @@ async def main(host: str, port: int, access_token:str):
                     result = nacos.get(name, url, arguments)
                     return [types.TextContent(type="text", text=result)]
                 case nacos_tools.NacosToolNames.LIST_LISTENED_CONFIGS:
-                    url = nacos_tools.NacosListListedConfigs().url
+                    url = nacos_tools.NacosListListenedConfigs().url
                     result = nacos.get(name, url, arguments)
                     return [types.TextContent(type="text", text=result)]
                 case _:
