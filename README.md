@@ -8,8 +8,12 @@ This MCP(Model Context Protocol) Server is for Nacos interaction and automation.
 
 Please note that `mcp-server-nacos` is currently in early development. The functionality and available tools are subject to change and expansion as we continue to develop and improve the server. And also note that `mcp-server-nacos` only provide read, search and list operation, not support any write operation for current version. Write operation is planning supported in future versions. 
 
-One more note that this `mcp-server-nacos` required Nacos version upper than `3.0.0`, because of depended on the [Nacos Admin API](https://nacos.io/en/swagger/admin/) in 3.x.
+One more note that this `mcp-server-nacos` required version:
 
+```markdown
+1. Nacos version required upper `3.0.0`, because of depended on the [Nacos Admin API](https://nacos.io/en/swagger/admin/) in 3.x.
+2. python version required 3.x, recommend upper `3.13`.
+```
 ### Tools
 
 1. `list_namespaces`
@@ -108,11 +112,76 @@ One more note that this `mcp-server-nacos` required Nacos version upper than `3.
 
 ## Installation
 
-TODO
+### Using uv (recommended)
+
+When using [`uv`](https://docs.astral.sh/uv/) no specific installation is needed. We will
+use [`uvx`](https://docs.astral.sh/uv/guides/tools/) to directly run *mcp-server-nacos*.
+
+### Using PIP
+
+Alternatively you can install `mcp-server-nacos` via pip:
+
+```
+pip install mcp-server-nacos
+```
+
+After installation, you can run it as a script using:
+
+```
+python -m mcp_server_nacos
+```
 
 ## Configuration
 
-TODO
+### Usage with Claude Desktop
+
+Add this to your `claude_desktop_config.json`:
+
+<details>
+<summary>Using uvx</summary>
+
+```json
+"mcpServers": {
+  "git": {
+    "command": "uvx",
+    "args": [
+        "nacos-mcp-server",
+        "--host",
+        "your_nacos_host",
+        "--port",
+        "your_nacos_main_port, such as 8848",
+        "--access_token",
+        "your_nacos_access_token, get from `login` api: /nacos/v3/auth/user/login with `username` and `password`"
+      ],
+  }
+}
+```
+
+> You may need to put the full path to the `uvx` executable in the `command` field. You can get this by running `which uvx` on MacOS/Linux or `where uvx` on Windows.
+
+</details>
+
+<details>
+<summary>Using pip installation</summary>
+
+```json
+"mcpServers": {
+  "git": {
+    "command": "python",
+        "args": [
+        "-m",
+        "nacos-mcp-server",
+        "--host",
+        "your_nacos_host",
+        "--port",
+        "your_nacos_main_port, such as 8848",
+        "--access_token",
+        "your_nacos_access_token, get from `login` api: /nacos/v3/auth/user/login with `username` and `password`"
+      ],
+  }
+}
+```
+</details>
 
 ## Development
 
