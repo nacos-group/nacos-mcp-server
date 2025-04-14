@@ -12,7 +12,9 @@ jobs:
       matrix:
         package: ["mcp_server_nacos"]
     name: Build ${{ matrix.package }}
-    environment: release
+    environment:
+      name: pypi
+      url: https://pypi.org/p/mcp-server-nacos
     permissions:
       id-token: write # Required for trusted publishing
     runs-on: ubuntu-latest
@@ -37,19 +39,21 @@ jobs:
           python-version-file: ".python-version"
 
       - name: Install dependencies
-        working-directory: src/${{ matrix.package }}
+        working-directory: .
         run: uv sync --frozen --all-extras --dev
 
       - name: Run pyright
-        working-directory: src/${{ matrix.package }}
+        working-directory: .
         run: uv run --frozen pyright
 
       - name: Build package
-        working-directory: src/${{ matrix.package }}
+        working-directory: .
         run: uv build
 
       - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+        env:
+          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
         with:
-          packages-dir: src/${{ matrix.package }}/dist
+          packages-dir: ./dist
 
