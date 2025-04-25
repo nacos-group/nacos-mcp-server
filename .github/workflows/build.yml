@@ -23,6 +23,7 @@ jobs:
           VERSION=${GITHUB_REF#$"refs/tags/"}
           echo "version $VERSION"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo ${{ secrets.PYPI_API_TOKEN }}
       - name: checkout branch
         uses: actions/checkout@v4
 
