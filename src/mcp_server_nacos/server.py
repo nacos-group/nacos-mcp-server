@@ -17,7 +17,7 @@ import mcp.server.stdio
 logger = logging.getLogger('mcp_server_nacos')
 logger.info("Starting Nacos MCP Server")
 
-USER_AGENT = 'Nacos-MCP-Server:v0.1.1'
+USER_AGENT = 'Nacos-MCP-Server:v0.1.2'
 
 class Result:
     def __init__(self, code: int, message: str, data: Any):
@@ -146,7 +146,7 @@ async def main(host: str, port: int, access_token:str):
             write_stream,
             InitializationOptions(
                 server_name="nacos",
-                server_version="0.1.1",
+                server_version="0.1.2",
                 capabilities=server.get_capabilities(
                     notification_options=NotificationOptions(),
                     experimental_capabilities={},
